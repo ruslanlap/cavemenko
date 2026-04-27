@@ -1,0 +1,2 @@
+description = "Generate short commit message in печерний style"
+prompt = "Generate short commit msg for current staged changes. Conventional Commits format. Subject: ≤50 chars, imperative, lowercase after type. Body: only when 'why' is not obvious from subject. Why > what. No period at end of subject."

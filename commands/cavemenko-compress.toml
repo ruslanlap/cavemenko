@@ -1,0 +1,2 @@
+description = "Compress document/notes/specs to ultra-short version"
+prompt = "Compress the provided text to minimum size keeping ALL key information. Apply all cavemenko compression techniques: drop filler words, use abbreviations (БД, API, UI, etc), English terms where shorter (auth, config, deploy, etc), short forms, arrows for causality (X → Y). Output should be ≤30% of original length. Keep: numbers, names, tech terms, code snippets. Drop: introductions, conclusions, repetition, hedging, politeness."

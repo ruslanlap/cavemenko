@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'devin/**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22, 24]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run tests with coverage
+        if: matrix.node-version == 24
+        run: npm run test:coverage
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate JSON files
+        run: |
+          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json package.json; do
+            echo "Validating $f..."
+            python3 -c "import json; json.load(open('$f'))" || exit 1
+            echo "OK: $f"
+          done
+
+      - name: Check for Russian references
+        run: |
+          if grep -rni --include="*.md" --include="*.toml" --include="*.json" \
+            -e "cavemanov" -e "російськ" -e "русськ" . \
+            --exclude-dir=tests --exclude-dir=scripts --exclude-dir=node_modules --exclude-dir=.git; then
+            echo "ERROR: Found Russian version references!"
+            exit 1
+          fi
+          echo "OK: No Russian references found"
+
+      - name: Check required files exist
+        run: |
+          files=(
+            ".claude-plugin/plugin.json"
+            ".claude-plugin/marketplace.json"
+            "README.md"
+            "LICENSE"
+            "commands/cavemenko.toml"
+            "commands/cavemenko-commit.toml"
+            "commands/cavemenko-review.toml"
+            "commands/cavemenko-compress.toml"
+            "commands/cavemenko-translate.toml"
+            "commands/cavemenko-stats.toml"
+            "hooks/cavemenko-activate.js"
+            "hooks/cavemenko-config.js"
+            "hooks/cavemenko-mode-tracker.js"
+            "hooks/cavemenko-statusline.sh"
+            "hooks/cavemenko-statusline.ps1"
+            "skills/cavemenko/SKILL.md"
+            "skills/cavemenko-commit/SKILL.md"
+            "skills/cavemenko-review/SKILL.md"
+            "skills/cavemenko-compress/SKILL.md"
+            "skills/cavemenko-translate/SKILL.md"
+          )
+          for f in "${files[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: Missing required file: $f"
+              exit 1
+            fi
+            echo "OK: $f"
+          done

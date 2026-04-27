@@ -1,0 +1,2 @@
+description = "One-line code review comments"
+prompt = "Review current code changes. One line per issue. Format: L<line>: <severity> <problem>. <fix>. Severity: bug, risk, nit, q. Skip praise. Skip obvious. If code ok — say 'LGTM' and stop."

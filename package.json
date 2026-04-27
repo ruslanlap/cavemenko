@@ -1,0 +1,16 @@
+{
+  "name": "cavemenko",
+  "version": "2.0.0",
+  "description": "Ultra-compressed Ukrainian mode for Claude Code",
+  "license": "MIT",
+  "author": "ruslanlap",
+  "repository": "https://github.com/ruslanlap/cavemenko",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "node scripts/lint.js"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
+}

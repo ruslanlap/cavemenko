@@ -1,0 +1,2 @@
+description = "Translate eng tech docs to compressed Ukrainian"
+prompt = "Translate the provided English text to compressed Ukrainian. Apply all cavemenko compression techniques during translation — don't translate literally then compress, do both simultaneously. Keep English tech terms where they're shorter than Ukrainian equivalents (auth, deploy, config, cache, middleware, etc). Use abbreviations (БД, API, UI, ШІ, etc). Target: translated text should be shorter than original English."

@@ -1,0 +1,2 @@
+description = "Show cavemenko session stats (mode, estimated token savings)"
+prompt = "Show current cavemenko stats: active mode, estimated token savings this session, compression ratio. Display as a short summary table. If no stats available, show current mode and explain that stats accumulate during the session."

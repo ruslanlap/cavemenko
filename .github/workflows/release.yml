@@ -1,0 +1,89 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install & test
+        run: npm ci && npm run lint && npm test
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Verify version consistency
+        run: |
+          TAG_VERSION="${{ steps.version.outputs.VERSION }}"
+          PLUGIN_VERSION=$(node -p "require('./.claude-plugin/plugin.json').version")
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG_VERSION" != "$PLUGIN_VERSION" ]; then
+            echo "ERROR: Tag v${TAG_VERSION} doesn't match plugin.json version ${PLUGIN_VERSION}"
+            exit 1
+          fi
+          if [ "$TAG_VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "ERROR: Tag v${TAG_VERSION} doesn't match package.json version ${PACKAGE_VERSION}"
+            exit 1
+          fi
+          echo "Version $TAG_VERSION verified across all files"
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get previous tag
+          PREV_TAG=$(git tag --sort=-version:refname | head -2 | tail -1)
+          if [ -z "$PREV_TAG" ] || [ "$PREV_TAG" = "${GITHUB_REF#refs/tags/}" ]; then
+            # First release — show all commits
+            CHANGES=$(git log --oneline --no-merges)
+          else
+            CHANGES=$(git log --oneline --no-merges ${PREV_TAG}..HEAD)
+          fi
+
+          # Write to file to handle multiline
+          echo "## What's Changed" > /tmp/changelog.md
+          echo "" >> /tmp/changelog.md
+          echo "$CHANGES" | while read line; do
+            echo "- $line" >> /tmp/changelog.md
+          done
+          echo "" >> /tmp/changelog.md
+          echo "## Install" >> /tmp/changelog.md
+          echo "" >> /tmp/changelog.md
+          echo '```' >> /tmp/changelog.md
+          echo "/plugin marketplace add ruslanlap/cavemenko" >> /tmp/changelog.md
+          echo "/plugin install cavemenko@cavemenko" >> /tmp/changelog.md
+          echo '```' >> /tmp/changelog.md
+          echo "" >> /tmp/changelog.md
+          echo "Or pin to this version:" >> /tmp/changelog.md
+          echo '```' >> /tmp/changelog.md
+          echo "/plugin marketplace add https://github.com/ruslanlap/cavemenko.git#v${{ steps.version.outputs.VERSION }}" >> /tmp/changelog.md
+          echo '```' >> /tmp/changelog.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          body_path: /tmp/changelog.md
+          draft: false
+          prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
+          generate_release_notes: true

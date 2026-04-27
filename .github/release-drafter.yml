@@ -1,0 +1,85 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+template: |
+  ## What's Changed
+
+  $CHANGES
+
+  ## Install
+
+  ```
+  /plugin marketplace add ruslanlap/cavemenko
+  /plugin install cavemenko@cavemenko
+  ```
+
+  Or pin to this version:
+  ```
+  /plugin marketplace add https://github.com/ruslanlap/cavemenko.git#v$RESOLVED_VERSION
+  ```
+
+categories:
+  - title: 'New Features'
+    labels:
+      - 'enhancement'
+      - 'feature'
+  - title: 'Bug Fixes'
+    labels:
+      - 'bug'
+      - 'fix'
+  - title: 'Documentation'
+    labels:
+      - 'docs'
+  - title: 'Hooks & Skills'
+    labels:
+      - 'hooks'
+      - 'skills'
+      - 'commands'
+  - title: 'Tests & CI'
+    labels:
+      - 'tests'
+      - 'ci'
+  - title: 'Dependencies'
+    labels:
+      - 'dependencies'
+
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&'
+
+version-resolver:
+  major:
+    labels:
+      - 'breaking'
+  minor:
+    labels:
+      - 'enhancement'
+      - 'feature'
+  patch:
+    labels:
+      - 'bug'
+      - 'fix'
+      - 'docs'
+      - 'dependencies'
+  default: patch
+
+exclude-labels:
+  - 'skip-changelog'
+
+autolabeler:
+  - label: 'docs'
+    files:
+      - '*.md'
+  - label: 'tests'
+    files:
+      - 'tests/**'
+  - label: 'ci'
+    files:
+      - '.github/**'
+  - label: 'hooks'
+    files:
+      - 'hooks/**'
+  - label: 'skills'
+    files:
+      - 'skills/**'
+  - label: 'commands'
+    files:
+      - 'commands/**'

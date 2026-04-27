@@ -1,0 +1,45 @@
+{
+  "name": "cavemenko",
+  "owner": {
+    "name": "ruslanlap",
+    "url": "https://github.com/ruslanlap"
+  },
+  "metadata": {
+    "description": "Ultra-compressed Ukrainian mode for Claude Code. −65-90% tokens, 0% accuracy loss.",
+    "version": "2.0.0"
+  },
+  "plugins": [
+    {
+      "name": "cavemenko",
+      "source": "./",
+      "description": "Ultra-compressed Ukrainian mode. −65-90% tokens, auto-detect lang, custom abbr, context-aware compression.",
+      "version": "2.0.0",
+      "author": {
+        "name": "ruslanlap",
+        "url": "https://github.com/ruslanlap"
+      },
+      "homepage": "https://github.com/ruslanlap/cavemenko",
+      "repository": "https://github.com/ruslanlap/cavemenko",
+      "license": "MIT",
+      "category": "productivity",
+      "tags": [
+        "ukrainian",
+        "українська",
+        "compression",
+        "tokens",
+        "caveman",
+        "печерний",
+        "ua",
+        "terse",
+        "output-style"
+      ],
+      "keywords": [
+        "ukrainian",
+        "compression",
+        "tokens",
+        "caveman",
+        "productivity"
+      ]
+    }
+  ]
+}

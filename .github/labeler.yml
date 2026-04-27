@@ -1,0 +1,35 @@
+hooks:
+  - changed-files:
+      - any-glob-to-any-file: 'hooks/**'
+
+skills:
+  - changed-files:
+      - any-glob-to-any-file: 'skills/**'
+
+commands:
+  - changed-files:
+      - any-glob-to-any-file: 'commands/**'
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+        - 'README.md'
+        - 'LICENSE'
+        - '**/*.md'
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file: 'tests/**'
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+        - '.github/**'
+        - 'scripts/**'
+
+config:
+  - changed-files:
+      - any-glob-to-any-file:
+        - '.claude-plugin/**'
+        - 'package.json'
+        - 'package-lock.json'

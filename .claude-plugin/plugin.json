@@ -1,0 +1,54 @@
+{
+  "name": "cavemenko",
+  "version": "2.0.0",
+  "description": "Ultra-compressed Ukrainian mode for Claude Code. −65-90% tokens, 0% accuracy loss. Auto-detect language, custom abbreviations, token counter, context-aware compression.",
+  "author": {
+    "name": "ruslanlap",
+    "url": "https://github.com/ruslanlap"
+  },
+  "homepage": "https://github.com/ruslanlap/cavemenko",
+  "repository": "https://github.com/ruslanlap/cavemenko",
+  "license": "MIT",
+  "keywords": [
+    "ukrainian",
+    "українська",
+    "compression",
+    "стиснення",
+    "tokens",
+    "токени",
+    "caveman",
+    "печерний",
+    "productivity",
+    "ua",
+    "skill",
+    "hooks",
+    "output-style",
+    "terse"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/cavemenko-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Завантаження печерного режиму..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/cavemenko-mode-tracker.js\"",
+            "timeout": 5,
+            "statusMessage": "Відстеження режиму..."
+          }
+        ]
+      }
+    ]
+  }
+}
