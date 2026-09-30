@@ -95,4 +95,45 @@ describe('marketplace.json', () => {
     );
     expect(marketplaceConfig.metadata.version).toBe(pluginConfig.version);
   });
+
+  // PR #14 replaced the discredited '-65-90% tokens, 0% accuracy loss' with the
+  // measured figure. The number then existed in three free-text strings that
+  // nothing diffed against the benchmark, which is how v2.1.0's fabricated
+  // stats shipped in the first place. One claim, asserted in one place.
+  describe('the measured claim', () => {
+    const CLAIM = '49%';
+    const DISPROVED = [/65-90/i, /0%\s*accuracy/i, /zero accuracy/i];
+
+    const descriptions = () => {
+      const pluginConfig = JSON.parse(
+        fs.readFileSync(path.join(__dirname, '..', '.claude-plugin', 'plugin.json'), 'utf8')
+      );
+      return {
+        'plugin.json': pluginConfig.description,
+        'marketplace.json metadata': marketplaceConfig.metadata.description,
+        'marketplace.json plugin': marketplaceConfig.plugins[0].description
+      };
+    };
+
+    test('every description states the measured number', () => {
+      const missing = Object.entries(descriptions())
+        .filter(([, d]) => !d.includes(CLAIM))
+        .map(([f]) => f);
+      expect(missing).toEqual([]);
+    });
+
+    test('no description carries a discredited claim', () => {
+      const bad = Object.entries(descriptions())
+        .filter(([, d]) => DISPROVED.some(re => re.test(d)))
+        .map(([f]) => f);
+      expect(bad).toEqual([]);
+    });
+
+    test('every description says the number is measured, not estimated', () => {
+      const vague = Object.entries(descriptions())
+        .filter(([, d]) => !/measured/i.test(d))
+        .map(([f]) => f);
+      expect(vague).toEqual([]);
+    });
+  });
 });
