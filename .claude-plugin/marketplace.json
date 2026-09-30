@@ -5,15 +5,15 @@
     "url": "https://github.com/ruslanlap"
   },
   "metadata": {
-    "description": "Ultra-compressed Ukrainian mode for Claude Code. −65-90% tokens, 0% accuracy loss.",
-    "version": "2.4.1"
+    "description": "Ultra-compressed Ukrainian mode for Claude Code. −49% tokens on top of a terse control, measured.",
+    "version": "2.4.2"
   },
   "plugins": [
     {
       "name": "cavemenko",
       "source": "./",
-      "description": "Ultra-compressed Ukrainian mode. −65-90% tokens, auto-detect lang, custom abbr, context-aware compression.",
-      "version": "2.4.1",
+      "description": "Ultra-compressed Ukrainian mode. −49% tokens on top of a terse control, measured.",
+      "version": "2.4.2",
       "author": {
         "name": "ruslanlap",
         "url": "https://github.com/ruslanlap"
