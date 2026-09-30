@@ -145,6 +145,22 @@ hermes skill install cavemenko    # або скопіювати SKILL.md у ~/.h
 
 Рівень: `/cavemenko lite|full|ultra`, вимкнути — `звичайний режим`.
 
+Щоб не набирати `/cavemenko` щоразу, додай в `~/.hermes/config.yaml`:
+
+```yaml
+skills:
+  auto_load:
+    - cavemenko
+```
+
+Реальні цифри в Hermes читаються з його власного обліку (`state.db`):
+
+```bash
+python3 integrations/hermes/cavemenko-stats.py --last 5
+```
+
+Деталі — [integrations/hermes/README.md](integrations/hermes/README.md).
+
 </details>
 
 <details>
