@@ -3,14 +3,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 [![Version](https://img.shields.io/github/v/release/ruslanlap/cavemenko?label=version&color=blue)](https://github.com/ruslanlap/cavemenko/releases)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-blueviolet?logo=anthropic&logoColor=white)](https://www.anthropic.com/claude-code)
-[![Token Savings](https://img.shields.io/badge/токени_економія-60..75%25-brightgreen)](https://github.com/ruslanlap/cavemenko#виміряно)
+[![Token Savings](https://img.shields.io/badge/токени_економія-−49%25_поверх_terse-brightgreen)](https://github.com/ruslanlap/cavemenko#-виміряно)
 [![Language](https://img.shields.io/badge/мова-🇺🇦_Українська-blue)](https://github.com/ruslanlap/cavemenko)
 [![Node.js](https://img.shields.io/badge/runtime-Node.js-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/ruslanlap/cavemenko/pulls)
 
 > **Вогонь. Код. Менше слів.**
 
-Plugin для [Claude Code](https://www.anthropic.com/claude-code) що вмикає **печерний режим** — видаляє воду, зберігає суть. 60–75% токенів без втрати tech-точності. Побудований для українських розробників, розуміє обидві мови.
+Plugin для [Claude Code](https://www.anthropic.com/claude-code) що вмикає **печерний режим** — видаляє воду, зберігає суть. Українські прийоми стискування (pro-drop, короткі форми) + English tech terms. Виміряно: **−49% токенів поверх terse-контролю**, без втрати фактів.
+
+Це український sibling проекту [caveman](https://github.com/JuliusBrussee/caveman) (108k⭐) — там англійські правила, тут рідні українські. Чесний 3-arm A/B — у розділі [«Виміряно»](#-виміряно).
 
 ```
 $ /cavemenko
@@ -44,7 +46,7 @@ Claude Code за замовчуванням відповідає як акаде
 
 Cavemenko перемикає стиль на **інженерний**: конкретно, стисло, по суті — так, як говорять між собою в команді. Ніяких «Звичайно, із задоволенням допоможу...».
 
-Назва: *cave* (печерна людина говорила коротко) + *menko* (зменшувальний суфікс). Плагін використовує рідні механізми мови, а не жорстке обрізання — граматика і сенс зберігаються.
+Назва: *cave* (печерна людина говорила коротко) + *менко* — відсидка до українського прізвища Менко, так само як *Brussee* у оригіналі. Плагін використовує рідні механізми мови, а не жорстке обрізання — граматика і сенс зберігаються.
 
 ---
 
@@ -259,14 +261,20 @@ export CLAUDE_CODE_PLUGIN_SEED_DIR=/opt/claude-seed
 
 ## 📏 Виміряно
 
-A/B на реальних задачах (claude-opus-4-6, однакова модель в обох armах). Baseline — той самий запит без ruleset.
+3-arm A/B на реальних задачах, `claude-opus-4-6`, одна модель в усіх armах. **`terse` = control arm** (просто `Answer concisely.`) — саме він робить цифру чесною: skill вимірюється не проти «мовчазної моделі», а проти загального «говори стисло».
 
-| Рівень | Економія | Facts retained |
-|--------|----------|----------------|
-| `full` | **−57%** | 4/4 → 5/5 (не втрачено) |
-| `ultra` | **−71%** | 4/4 (не втрачено) |
+| Arm | Відповіді | Facts | vs base | vs terse control |
+|-----|-----------|-------|---------|------------------|
+| base (без інструкцій) | 9625 сим. | 5/13 | — | +66% |
+| **terse** (control) | 5793 | 5/13 | −40% | — |
+| caveman (JuliusBrussee, англ.) | 4606 | **4/13** | −53% | **−21%** |
+| **cavemenko (uk)** | **2970** | **5/13** | **−70%** | **−49%** |
 
-Інжект ruleset: **1189 токенів** на сесію (було 2360). Per-turn reinforcement: **86 токенів**.
+Чесне читання: **`cavemenko` сильніший за англійський оригінал саме на українському** (−49% проти −21% поверх control) і не втратив жодного факту, де `caveman` втратив один. Англійський caveman не має українських правил (pro-drop, короткі форми) і на указівці українською втрачає факт.
+
+Інжект ruleset: **1189 токенів** на сесію. Per-turn reinforcement: **86 токенів**.
+
+**Правило, яке ми перейняли в їхнього виміру:** вигадані abbr (`імпл`, `конф`) і стрілки `→` не дають економії — токенайзер ріже їх так само, як повне слово. `ultra` тепер їх забороняє.
 
 Факти рахуються автоматично: Stop hook читає останню відповідь з transcript, рахує токени, і `/cavemenko-stats` показує **лише виміряні числа**. Baseline = хід без cavemenko; поки такого ходу не було — `savedTokens = 0`, а не вигаданий відсоток.
 
