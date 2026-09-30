@@ -131,6 +131,45 @@ claude plugin install cavemenko@cavemenko --scope user
 </details>
 
 <details>
+<summary><strong>Hermes</strong></summary>
+
+Hermes завантажує ruleset через skill. Два варіанти:
+
+```bash
+# 1. Встановити як Hermes-скіл (Hermes сам підхопить)
+hermes skill install cavemenko    # або скопіювати SKILL.md у ~/.hermes/skills/
+
+# 2. Або просто просити в чаті:
+/cavemenko
+```
+
+Рівень: `/cavemenko lite|full|ultra`, вимкнути — `звичайний режим`.
+
+</details>
+
+<details>
+<summary><strong>agy / Antigravity CLI</strong></summary>
+
+agy немає `--system-prompt` (перевірено: `flags provided but not defined: -system-prompt`), тому ruleset йде в prompt:
+
+```bash
+# витягнути ruleset без YAML-фронтматтера
+sed '1,/^---$/d' skills/cavemenko/SKILL.md > rules.md
+
+# разовий запуск — ruleset + питання в одному промпті
+agy -p "$(cat rules.md)
+
+Поясни, чому useEffect з [] не викликає ре-рендер, а з [count] — викликає." \
+    --model claude-opus-4-6-thinking
+```
+
+Або на рівні проєкту — покласти `skills/cavemenko/SKILL.md` як `AGENTS.md` у робочу директорію, тоді agy підхопить сам у кожній сесії.
+
+`agy setup` не потрібен — це чисто текстовий ruleset, жодного коду.
+
+</details>
+
+<details>
 <summary>Pin to version</summary>
 
 ```
