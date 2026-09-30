@@ -3,21 +3,23 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 [![Version](https://img.shields.io/github/v/release/ruslanlap/cavemenko?label=version&color=blue)](https://github.com/ruslanlap/cavemenko/releases)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-blueviolet?logo=anthropic&logoColor=white)](https://www.anthropic.com/claude-code)
-[![Token Savings](https://img.shields.io/badge/токени_економія-−65..90%25-brightgreen)](https://github.com/ruslanlap/cavemenko#як-стискається)
+[![Token Savings](https://img.shields.io/badge/токени_економія-60..75%25-brightgreen)](https://github.com/ruslanlap/cavemenko#виміряно)
 [![Language](https://img.shields.io/badge/мова-🇺🇦_Українська-blue)](https://github.com/ruslanlap/cavemenko)
 [![Node.js](https://img.shields.io/badge/runtime-Node.js-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/ruslanlap/cavemenko/pulls)
 
 > **Вогонь. Код. Менше слів.**
 
-Plugin для [Claude Code](https://www.anthropic.com/claude-code) що вмикає **печерний режим** — видаляє воду, зберігає суть. −65–90% токенів без втрати точності. Побудований для українських розробників, розуміє обидві мови.
+Plugin для [Claude Code](https://www.anthropic.com/claude-code) що вмикає **печерний режим** — видаляє воду, зберігає суть. 60–75% токенів без втрати tech-точності. Побудований для українських розробників, розуміє обидві мови.
 
 ```
 $ /cavemenko
-╔─────────────────────────────────────────────────╗
-│  Режим: FULL  ·  Токени: ↓ ~78%  ·  🦴 Active  │
-╚─────────────────────────────────────────────────╝
+╔═════════════════════════════════════════════╗
+║  Режим: FULL  ·  🦴 Active                  ║
+╚═════════════════════════════════════════════╝
 ```
+
+> Економія вимірюється автоматично: Stop hook рахує реальні токени кожної відповіді і порівнює з ходами без cavemenko. `/cavemenko-stats` показує лише виміряні числа — ніколи не оцінку.
 
 
 ---
@@ -57,7 +59,7 @@ Cavemenko перемикає стиль на **інженерний**: конк�
 **`full` (~50 символів):**
 > Inline obj = нове ref кожен render → rerender. Оберни в `useMemo`.
 
-**Економія: ~78%**
+**Економія: ~78%** (ілюстрація, не вимірювання — реальні цифри в розділі «Виміряно»)
 
 </details>
 
@@ -255,6 +257,21 @@ export CLAUDE_CODE_PLUGIN_SEED_DIR=/opt/claude-seed
 
 ---
 
+## 📏 Виміряно
+
+A/B на реальних задачах (claude-opus-4-6, однакова модель в обох armах). Baseline — той самий запит без ruleset.
+
+| Рівень | Економія | Facts retained |
+|--------|----------|----------------|
+| `full` | **−57%** | 4/4 → 5/5 (не втрачено) |
+| `ultra` | **−71%** | 4/4 (не втрачено) |
+
+Інжект ruleset: **1189 токенів** на сесію (було 2360). Per-turn reinforcement: **86 токенів**.
+
+Факти рахуються автоматично: Stop hook читає останню відповідь з transcript, рахує токени, і `/cavemenko-stats` показує **лише виміряні числа**. Baseline = хід без cavemenko; поки такого ходу не було — `savedTokens = 0`, а не вигаданий відсоток.
+
+---
+
 ## 🔬 Як стискається
 
 Cavemenko не обрізає текст — він використовує **рідні** механізми української мови та зрозумілі tech-скорочення. Граматика і точність зберігаються.
@@ -427,9 +444,14 @@ UserPromptSubmit hook
   ├─ Парсить фрази активації/деактивації (укр + eng)
   └─ Надсилає per-turn reinforcement (модель не дрейфує)
 
+Stop hook
+  ├─ Читає останню відповідь з transcript → рахує токени
+  ├─ Кладе в .cavemenko-stats (JSON): turns, tokens, baselineTokens, savedTokens
+  └─ Baseline = хід, де cavemenko був off. Без baseline savedTokens = 0 (не вигадує %)
+
 Statusline
   ├─ Читає mode flag → [CAVEMENKO:LEVEL]
-  └─ Читає stats file → token savings counter
+  └─ Читає savedTokens → показує ↓N тільки якщо > 0
 ```
 
 ### Безпека

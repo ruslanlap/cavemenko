@@ -66,24 +66,29 @@ describe('main cavemenko SKILL.md content', () => {
   test('contains abbreviation table', () => {
     expect(content).toContain('БД');
     expect(content).toContain('auth');
-    expect(content).toContain('API');
-    expect(content).toContain('ПДР');
-    expect(content).toContain('CLI');
+    expect(content).toContain('імпл');
+    expect(content).toContain('конф');
   });
 
   test('contains auto-detect language section', () => {
-    expect(content).toContain('Auto-detect language');
+    expect(content).toContain('## Мова');
   });
 
   test('contains context-aware compression section', () => {
-    expect(content).toContain('Context-aware compression');
+    expect(content).toContain('## Контекст');
   });
 
   test('contains Ukrainian dev slangs section', () => {
-    expect(content).toContain('Ukrainian dev slangs');
+    expect(content).toContain('Dev slangs');
     expect(content).toContain('закоміть');
     expect(content).toContain('задеплой');
     expect(content).toContain('зарев\'юй');
+  });
+
+  test('declares a length budget per level', () => {
+    expect(content).toContain('HARD RULES');
+    expect(content).toContain('Бюджет');
+    expect(content).toMatch(/~15-20% baseline/);
   });
 
   test('contains intensity level examples', () => {

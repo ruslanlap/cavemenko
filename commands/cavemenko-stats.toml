@@ -1,2 +1,2 @@
-description = "Show cavemenko session stats (mode, estimated token savings)"
-prompt = "Show current cavemenko stats: active mode, estimated token savings this session, compression ratio. Display as a short summary table. If no stats available, show current mode and explain that stats accumulate during the session."
+description = "Show cavemenko measured stats (real token counts, not estimates)"
+prompt = "Read the file $CLAUDE_CONFIG_DIR/.cavemenko-stats (fall back to ~/.claude/.cavemenko-stats) and report ONLY what is literally in it. Do NOT estimate, extrapolate, or invent any number — if a field is missing, say 'not measured yet'. Report: turns, tokens used, baseline tokens, saved tokens, and the compression % ONLY if savedTokens > 0. If savedTokens is 0, explain in one line: savings are only computable after at least one turn ran with cavemenko OFF (the Stop hook records those as the baseline). Keep it to a short table."

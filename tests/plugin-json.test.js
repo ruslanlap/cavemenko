@@ -50,8 +50,16 @@ describe('plugin.json', () => {
     expect(pluginConfig.author.name).toBe('ruslanlap');
   });
 
-  test('version is 2.0.0', () => {
-    expect(pluginConfig.version).toBe('2.0.0');
+  test('version matches package.json', () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
+    expect(pluginConfig.version).toBe(pkg.version);
+  });
+
+  test('registers the Stop hook that measures real stats', () => {
+    const stop = pluginConfig.hooks.Stop;
+    expect(stop).toBeDefined();
+    const stopFile = stop[0].hooks[0].command.match(/hooks\/([^"]+)/)[1];
+    expect(fs.existsSync(path.join(__dirname, '..', 'hooks', stopFile))).toBe(true);
   });
 });
 
