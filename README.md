@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 [![Version](https://img.shields.io/github/v/release/ruslanlap/cavemenko?label=version&color=blue)](https://github.com/ruslanlap/cavemenko/releases)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-blueviolet?logo=anthropic&logoColor=white)](https://www.anthropic.com/claude-code)
-[![Token Savings](https://img.shields.io/badge/токени_економія-−49%25_поверх_terse-brightgreen)](https://github.com/ruslanlap/cavemenko#-виміряно)
+[![Token Savings](https://img.shields.io/badge/токени_економія-−49%25_поверх_terse-brightgreen)](#виміряно)
 [![Language](https://img.shields.io/badge/мова-🇺🇦_Українська-blue)](https://github.com/ruslanlap/cavemenko)
 [![Node.js](https://img.shields.io/badge/runtime-Node.js-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/ruslanlap/cavemenko/pulls)
@@ -133,19 +133,23 @@ claude plugin install cavemenko@cavemenko --scope user
 <details>
 <summary><strong>Hermes</strong></summary>
 
-Hermes завантажує ruleset через skill. Два варіанти:
+Одна команда — і ruleset встановлено:
 
 ```bash
-# 1. Встановити як Hermes-скіл (Hermes сам підхопить)
-hermes skill install cavemenko    # або скопіювати SKILL.md у ~/.hermes/skills/
-
-# 2. Або просто просити в чаті:
-/cavemenko
+hermes skills install \
+  "https://raw.githubusercontent.com/ruslanlap/cavemenko/master/skills/cavemenko/SKILL.md" \
+  --category productivity
 ```
 
-Рівень: `/cavemenko lite|full|ultra`, вимкнути — `звичайний режим`.
+Hermes сканує skill на безпеку перед встановленням (тут — `SAFE`) і бере оновлення з того ж URL:
 
-Щоб не набирати `/cavemenko` щоразу, додай в `~/.hermes/config.yaml`:
+```bash
+hermes skills check      # чи є нова версія
+hermes skills update     # оновити
+hermes skills uninstall productivity/cavemenko
+```
+
+Щоб правила діяли **кожну сесію**, додай в `~/.hermes/config.yaml`:
 
 ```yaml
 skills:
@@ -153,10 +157,17 @@ skills:
     - cavemenko
 ```
 
+Без цього скіл доступний, але вмикається вручну: `/cavemenko` (або просто попроси «стисло»).
+
+Рівні: `/cavemenko lite|full|ultra`, вимкнути — `звичайний режим`.
+
+Офлайн-варіант (без інтернету) — скопіювати `skills/cavemenko/SKILL.md` у `~/.hermes/skills/productivity/cavemenko/`.
+
 Реальні цифри в Hermes читаються з його власного обліку (`state.db`):
 
 ```bash
-python3 integrations/hermes/cavemenko-stats.py --last 5
+curl -sL "https://raw.githubusercontent.com/ruslanlap/cavemenko/master/integrations/hermes/cavemenko-stats.py" \
+  -o /tmp/cavemenko-stats.py && python3 /tmp/cavemenko-stats.py --last 5
 ```
 
 Деталі — [integrations/hermes/README.md](integrations/hermes/README.md).
