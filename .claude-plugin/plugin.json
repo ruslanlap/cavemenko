@@ -1,6 +1,6 @@
 {
   "name": "cavemenko",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Ultra-compressed Ukrainian mode for Claude Code. −65-90% tokens, 0% accuracy loss. Auto-detect language, custom abbreviations, token counter, context-aware compression.",
   "author": {
     "name": "ruslanlap",

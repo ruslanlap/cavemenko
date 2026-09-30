@@ -63,11 +63,12 @@ describe('main cavemenko SKILL.md content', () => {
     expect(content).toContain('Орудний');
   });
 
-  test('contains abbreviation table', () => {
+  test('keeps real Ukrainian abbreviations and bans invented ones', () => {
     expect(content).toContain('БД');
     expect(content).toContain('auth');
-    expect(content).toContain('імпл');
-    expect(content).toContain('конф');
+    expect(content).toContain('кеш');
+    // Invented abbr and arrows cost zero tokens under the tokenizer — banned.
+    expect(content).toMatch(/Custom abbr і стрілки/);
   });
 
   test('contains auto-detect language section', () => {
