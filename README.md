@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 [![Version](https://img.shields.io/github/v/release/ruslanlap/cavemenko?label=version&color=blue)](https://github.com/ruslanlap/cavemenko/releases)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-blueviolet?logo=anthropic&logoColor=white)](https://www.anthropic.com/claude-code)
-[![Token Savings](https://img.shields.io/badge/токени_економія-−49%25_поверх_terse-brightgreen)](#виміряно)
+[![Token Savings](https://img.shields.io/badge/токени_економія-−49%25_поверх_terse-brightgreen)](#-виміряно)
 [![Language](https://img.shields.io/badge/мова-🇺🇦_Українська-blue)](https://github.com/ruslanlap/cavemenko)
 [![Node.js](https://img.shields.io/badge/runtime-Node.js-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/ruslanlap/cavemenko/pulls)
@@ -12,7 +12,7 @@
 
 Plugin для [Claude Code](https://www.anthropic.com/claude-code) що вмикає **печерний режим** — видаляє воду, зберігає суть. Українські прийоми стискування (pro-drop, короткі форми) + English tech terms. Виміряно: **−49% токенів поверх terse-контролю**, без втрати фактів.
 
-Це український sibling проекту [caveman](https://github.com/JuliusBrussee/caveman) (108k⭐) — там англійські правила, тут рідні українські. Чесний 3-arm A/B — у розділі [«Виміряно»](#виміряно).
+Це український sibling проекту [caveman](https://github.com/JuliusBrussee/caveman) (108k⭐) — там англійські правила, тут рідні українські. Чесний 3-arm A/B — у розділі [«Виміряно»](#-виміряно).
 
 ```
 $ /cavemenko
@@ -28,16 +28,16 @@ $ /cavemenko
 
 ## Зміст
 
-- [Навіщо це](#навіщо-це)
-- [До vs Після](#до-vs-після)
-- [Встановлення](#встановлення)
-- [Використання](#використання)
-- [Рівні стиснення](#рівні-стиснення)
-- [Виміряно](#виміряно)
-- [Як стискається](#як-стискається)
-- [Конфігурація](#конфігурація)
-- [Архітектура](#архітектура)
-- [Ліцензія](#ліцензія)
+- [Навіщо це](#-навіщо-це)
+- [До vs Після](#-до-vs-після)
+- [Встановлення](#-встановлення)
+- [Використання](#-використання)
+- [Рівні стиснення](#-рівні-стиснення)
+- [Виміряно](#-виміряно)
+- [Як стискається](#-як-стискається)
+- [Конфігурація](#-конфігурація)
+- [Архітектура](#-архітектура)
+- [Ліцензія](#-ліцензія)
 
 ---
 

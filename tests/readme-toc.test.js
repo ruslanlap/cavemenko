@@ -4,14 +4,14 @@ const path = require('path');
 const README = path.join(__dirname, '..', 'README.md');
 
 // Transcribed from github-slugger (the library GitHub's renderer uses).
-// The trap: GitHub strips the emoji AND the whitespace before it, so
-// '## 📏 Виміряно' anchors to '#виміряно' — no leading hyphen. Adding one
+// The trap: GitHub strips the emoji but NOT the space in front of it, so
+// '## 📏 Виміряно' anchors to '#-виміряно' — with a leading hyphen. Verified
+// against the live page: <h2 id="user-content--виміряно">. Dropping the hyphen
 // produces a link that looks right and 404s in the browser.
 function slug(text) {
   return text
     .toLowerCase()
     .replace(/[^\p{L}\p{N}_\- ]/gu, '')
-    .trim()
     .replace(/ /g, '-');
 }
 
@@ -41,20 +41,22 @@ describe('README table of contents', () => {
     expect(missing).toEqual([]);
   });
 
-  test('no orphan TOC entries', () => {
-    const orphans = [...tocSlugs].filter(s => !slugs.has(s));
-    expect(orphans).toEqual([]);
+  test('every TOC anchor is a real heading slug', () => {
+    // The TOC label is plain text while the heading carries an emoji, so the
+    // anchor cannot be derived from the label. Membership is the real check:
+    // it is the set of slugs the browser can actually resolve.
+    const orphan = [...tocSlugs].filter(a => !slugs.has(a));
+    expect(orphan).toEqual([]);
   });
 
-  test('every anchor matches the real GitHub slug of its heading', () => {
-    const wrong = links
-      .filter(([, label, anchor]) => slug(label) !== anchor)
-      .map(([, label, anchor]) => `${label} -> #${anchor} (expected #${slug(label)})`);
-    expect(wrong).toEqual([]);
-  });
-
-  test('no leading-hyphen anchors (GitHub drops emoji and the space before it)', () => {
-    const bad = links.filter(([, , a]) => a.startsWith('-')).map(([, , a]) => a);
+  test('in-page anchors keep the hyphen the emoji leaves behind', () => {
+    // '## 📏 Виміряно' -> '#-виміряно'. A TOC without the hyphen is a 404.
+    const emojiHeadings = lines
+      .filter(l => l.startsWith('## '))
+      .map(l => l.replace(/^##\s+/, '').trim())
+      .filter(h => /^[^A-Za-z0-9\s]/.test(h) && h !== 'Зміст');
+    expect(emojiHeadings.length).toBeGreaterThan(0);
+    const bad = emojiHeadings.map(slug).filter(s => !s.startsWith('-'));
     expect(bad).toEqual([]);
   });
 
