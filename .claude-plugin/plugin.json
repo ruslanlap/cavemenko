@@ -1,6 +1,6 @@
 {
   "name": "cavemenko",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Ultra-compressed Ukrainian mode for Claude Code. −49% output tokens on top of a terse control, measured. Auto-detect language, native Ukrainian pro-drop, real token stats.",
   "author": {
     "name": "ruslanlap",

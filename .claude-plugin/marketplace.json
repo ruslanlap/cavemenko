@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Ultra-compressed Ukrainian mode for Claude Code. −49% tokens on top of a terse control, measured.",
-    "version": "2.4.2"
+    "version": "2.4.3"
   },
   "plugins": [
     {
       "name": "cavemenko",
       "source": "./",
       "description": "Ultra-compressed Ukrainian mode. −49% tokens on top of a terse control, measured.",
-      "version": "2.4.2",
+      "version": "2.4.3",
       "author": {
         "name": "ruslanlap",
         "url": "https://github.com/ruslanlap"
