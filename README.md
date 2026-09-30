@@ -28,7 +28,6 @@ $ /cavemenko
 
 ## Зміст
 
-- [Зміст](#зміст)
 - [Навіщо це](#-навіщо-це)
 - [До vs Після](#-до-vs-після)
 - [Встановлення](#-встановлення)
@@ -477,4 +476,3 @@ Statusline
 [MIT](LICENSE) © [ruslanlap](https://github.com/ruslanlap)
 
 Натхнено [caveman](https://github.com/JuliusBrussee/caveman) by Julius Brussee — побудовано з нуля для Ukrainian dev workflow.
-# cavemenko
