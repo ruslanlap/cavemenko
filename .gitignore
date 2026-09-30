@@ -3,3 +3,5 @@ coverage/
 .cavemenko-active
 .cavemenko-stats
 *.log
+# Windows zone marker — ADDS artifact, never belongs in git
+*:Zone.Identifier
