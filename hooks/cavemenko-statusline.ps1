@@ -27,13 +27,15 @@ $Mode = ($Mode -replace '[^a-z0-9-]', '')
 $Valid = @('off','lite','full','ultra','commit','review','compress','translate')
 if (-not ($Valid -contains $Mode)) { exit 0 }
 
-# Read token savings counter
+# Read measured token savings. JSON written by hooks/cavemenko-stats.js.
+# Only render a savings number when savedTokens > 0 — never a fabricated number.
 $Saved = ""
 if ((Test-Path $StatsFile) -and -not ((Get-Item -LiteralPath $StatsFile -Force).Attributes -band [System.IO.FileAttributes]::ReparsePoint)) {
     try {
-        $RawSaved = (Get-Content -LiteralPath $StatsFile -TotalCount 1 -ErrorAction Stop)
-        if ($null -ne $RawSaved) {
-            $NumSaved = ($RawSaved -replace '[^0-9]', '')
+        $Raw = (Get-Content -LiteralPath $StatsFile -TotalCount 1 -ErrorAction Stop)
+        if ($null -ne $Raw) {
+            $NumSaved = "0"
+            if ($Raw -match '"savedTokens"\s*:\s*(\d+)') { $NumSaved = $Matches[1] }
             if ($NumSaved -match '^\d+$' -and [int]$NumSaved -gt 0) {
                 if ([int]$NumSaved -ge 1000) {
                     $K = [math]::Floor([int]$NumSaved / 1000)

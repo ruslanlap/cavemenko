@@ -24,10 +24,11 @@ case "$MODE" in
   *) exit 0 ;;
 esac
 
-# Read token savings counter if available
+# Read measured token savings. JSON written by hooks/cavemenko-stats.js.
+# Only render a savings number when savedTokens > 0 — never a fabricated % .
 SAVED=""
 if [ -f "$STATS_FILE" ] && [ ! -L "$STATS_FILE" ]; then
-  RAW_SAVED=$(head -c 32 "$STATS_FILE" 2>/dev/null | tr -cd '0-9')
+  RAW_SAVED=$(head -c 2048 "$STATS_FILE" 2>/dev/null | tr ',' '\n' | grep '"savedTokens"' | tr -cd '0-9')
   if [ -n "$RAW_SAVED" ] && [ "$RAW_SAVED" -gt 0 ] 2>/dev/null; then
     if [ "$RAW_SAVED" -ge 1000 ]; then
       K=$((RAW_SAVED / 1000))
